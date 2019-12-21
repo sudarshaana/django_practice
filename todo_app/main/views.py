@@ -22,3 +22,18 @@ def add_todo(request):
 def todo_delete(request, todo_id):
   Todo.objects.get(id=todo_id).delete()
   return HttpResponseRedirect("/")
+
+def todo_edit(request, todo_id):
+  obj = Todo.objects.get(id=todo_id)
+
+  if request.method == "POST":
+    content = request.POST["text"]
+    obj.text = content
+    obj.save()
+    return HttpResponseRedirect("/")
+
+  text = obj.text
+  content = {"text": text}
+  print(obj)
+  print(content)
+  return render(request, 'main/edit.html', content)
